@@ -8,7 +8,7 @@ RUN npm install -g pnpm
 WORKDIR /app
 
 # Copy frontend files
-COPY frontend/package.json frontend/pnpm-lock.yaml ./frontend/
+COPY frontend/package.json frontend/pnpm-lock.yaml ./
 COPY frontend/ ./
 
 # Install dependencies
@@ -21,7 +21,7 @@ RUN pnpm build
 RUN npm install -g serve
 
 # Expose port
-EXPOSE 3000
+EXPOSE $PORT
 
 # Start the application
-CMD ["serve", "-s", "dist", "-l", "3000"]
+CMD ["sh", "-c", "serve -s dist -l $PORT"]
