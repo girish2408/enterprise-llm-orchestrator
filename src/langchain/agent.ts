@@ -171,7 +171,7 @@ export class EnterpriseAgent {
 
     // Update thread title if it's the first message
     if (recentMessages.length === 0) {
-      const title = await generateConversationSummary(message, response, toolCalls);
+      const title = await generateConversationSummary(message, fullResponse, toolCalls);
       await chatRepo.updateThreadTitle(actualThreadId, title);
     }
   }

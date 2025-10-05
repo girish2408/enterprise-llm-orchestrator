@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import { db } from '../services/db.js';
 import { logger } from '../config/logger.js';
 
-const router = Router();
+const router: Router = Router();
 
 router.get('/', async (req: Request, res: Response) => {
   try {

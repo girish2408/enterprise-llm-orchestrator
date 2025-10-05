@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import { getAllTools } from '../mcp/tools/registry.js';
 import { apiKeyAuth } from '../services/auth.js';
 
-const router = Router();
+const router: Router = Router();
 
 // Apply auth middleware to all routes
 router.use(apiKeyAuth);

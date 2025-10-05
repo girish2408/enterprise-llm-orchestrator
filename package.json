@@ -27,7 +27,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@langchain/core": "^0.3.78",
+    "@langchain/core": "^0.1.63",
     "@langchain/openai": "^0.0.14",
     "@prisma/client": "^5.7.1",
     "cors": "^2.8.5",

@@ -13,7 +13,7 @@ export interface ToolInvocation {
   id: string;
   toolName: string;
   input: Record<string, any>;
-  output?: Record<string, any>;
+  output: Record<string, any>;
   durationMs?: number;
 }
 
@@ -37,6 +37,7 @@ export interface LeaveBalanceResponse {
   annual: number;
   sick: number;
   remaining: number;
+  error?: string;
 }
 
 // CRM Tool Types
@@ -52,6 +53,7 @@ export interface CustomerLookupResponse {
     date: string;
     value: number;
   };
+  error?: string;
 }
 
 // Banking Tool Types
@@ -67,4 +69,5 @@ export interface PortfolioSummaryResponse {
     symbol: string;
     weight: number;
   }>;
+  error?: string;
 }

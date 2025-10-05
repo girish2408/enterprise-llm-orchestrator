@@ -3,7 +3,7 @@ import { apiKeyAuth } from '../services/auth.js';
 import { logger } from '../config/logger.js';
 import { db } from '../services/db.js';
 
-const router = Router();
+const router: Router = Router();
 
 // Apply auth middleware to all routes
 router.use(apiKeyAuth);
