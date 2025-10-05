@@ -1,1 +1,1 @@
-web: pnpm start
+web: cd frontend && pnpm start

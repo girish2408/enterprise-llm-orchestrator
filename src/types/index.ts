@@ -1,73 +1,63 @@
-export interface ChatRequest {
-  threadId?: string;
-  message: string;
+export interface Tool {
+  name: string;
+  description: string;
+  inputSchema: {
+    type: string;
+    properties: Record<string, any>;
+    required: string[];
+  };
+}
+
+export interface ToolCall {
+  id: string;
+  toolName: string;
+  input: Record<string, any>;
+  output: Record<string, any>;
+  durationMs: number;
+}
+
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: Date;
+  toolCalls?: ToolCall[];
 }
 
 export interface ChatResponse {
   threadId: string;
   message: string;
-  toolCalls?: ToolInvocation[];
+  toolCalls: ToolCall[];
 }
 
-export interface ToolInvocation {
-  id: string;
-  toolName: string;
-  input: Record<string, any>;
-  output: Record<string, any>;
-  durationMs?: number;
-}
-
-export interface MCPToolCall {
-  name: string;
-  arguments: Record<string, any>;
-}
-
-export interface MCPToolResult {
-  content: any[];
-  isError?: boolean;
-}
-
-// HR Tool Types
-export interface LeaveBalanceRequest {
-  employeeId: string;
-}
-
-export interface LeaveBalanceResponse {
-  employeeId: string;
-  annual: number;
-  sick: number;
-  remaining: number;
-  error?: string;
-}
-
-// CRM Tool Types
-export interface CustomerLookupRequest {
-  email: string;
-}
-
-export interface CustomerLookupResponse {
-  email: string;
-  id: string;
-  tier: string;
-  lastOrder: {
-    date: string;
-    value: number;
+export interface HealthStatus {
+  ok: boolean;
+  timestamp: string;
+  db: string;
+  uptime: number;
+  memory: {
+    rss: number;
+    heapTotal: number;
+    heapUsed: number;
+    external: number;
   };
-  error?: string;
 }
 
-// Banking Tool Types
-export interface PortfolioSummaryRequest {
-  accountId: string;
+export interface ApiEndpoint {
+  name: string;
+  description: string;
+  method: 'GET' | 'POST';
+  path: string;
+  requiresAuth: boolean;
+  example?: string;
 }
 
-export interface PortfolioSummaryResponse {
-  accountId: string;
-  totalValue: number;
-  pnlPct: number;
-  topHoldings: Array<{
-    symbol: string;
-    weight: number;
-  }>;
-  error?: string;
+export type ToolCategory = 'hr' | 'crm' | 'banking';
+
+export interface FlowStep {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  status: 'pending' | 'active' | 'completed' | 'error';
 }
