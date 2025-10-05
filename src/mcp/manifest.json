@@ -1,0 +1,49 @@
+{
+  "name": "enterprise-llm-orchestrator",
+  "version": "1.0.0",
+  "tools": [
+    {
+      "name": "hr.getLeaveBalance",
+      "description": "Get leave balance for employeeId",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "employeeId": {
+            "type": "string",
+            "description": "Employee ID to lookup leave balance for"
+          }
+        },
+        "required": ["employeeId"]
+      }
+    },
+    {
+      "name": "crm.lookupCustomer",
+      "description": "Look up customer by email",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Customer email address to lookup"
+          }
+        },
+        "required": ["email"]
+      }
+    },
+    {
+      "name": "banking.getPortfolioSummary",
+      "description": "Get portfolio summary by accountId",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "description": "Banking account ID to get portfolio summary for"
+          }
+        },
+        "required": ["accountId"]
+      }
+    }
+  ]
+}

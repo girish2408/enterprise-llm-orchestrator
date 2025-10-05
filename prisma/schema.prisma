@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Thread {
+  id         String    @id @default(uuid())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  title      String?   // optional: first user message or summary
+  messages   Message[]
+  @@index([createdAt])
+}
+
+enum MessageRole {
+  user
+  assistant
+  tool
+}
+
+model Message {
+  id         String           @id @default(uuid())
+  threadId   String
+  thread     Thread           @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  role       MessageRole
+  content    String           // plain text; for richer formats consider JSON
+  meta       Json?            // tokens, model, etc.
+  createdAt  DateTime         @default(now())
+  toolCalls  ToolInvocation[]
+  @@index([threadId, createdAt])
+}
+
+model ToolInvocation {
+  id         String   @id @default(uuid())
+  messageId  String
+  message    Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  toolName   String
+  input      Json
+  output     Json?
+  durationMs Int?
+  createdAt  DateTime @default(now())
+  @@index([toolName, createdAt])
+}
+
+model RequestLog {
+  id         String   @id @default(uuid())
+  route      String
+  method     String
+  status     Int
+  latencyMs  Int?
+  createdAt  DateTime @default(now())
+  ipHash     String?  // optional: hash for privacy
+  meta       Json?
+  @@index([route, createdAt])
+}
+
+model Employee {
+  id         String   @id
+  name       String
+  department String
+  status     String   @default("active")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  @@index([department])
+}
+
+model Customer {
+  id       String   @id
+  email    String   @unique
+  name     String
+  company  String
+  tier     String
+  status   String   @default("active")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([company])
+  @@index([tier])
+}
+
+model Account {
+  id       String   @id
+  type     String
+  owner    String
+  balance  Float
+  currency String   @default("USD")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([type])
+}
