@@ -2,10 +2,10 @@
 nixPkgs = ["nodejs", "pnpm"]
 
 [phases.install]
-cmds = ["cd frontend && pnpm install"]
+cmds = ["pnpm install"]
 
 [phases.build]
-cmds = ["cd frontend && pnpm build"]
+cmds = ["pnpm build"]
 
 [start]
-cmd = "cd frontend && pnpm start"
+cmd = "pnpm start"

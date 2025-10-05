@@ -7,6 +7,6 @@
     "restartPolicyType": "ON_FAILURE",
     "healthcheckPath": "/",
     "healthcheckTimeout": 100,
-    "startCommand": "cd frontend && pnpm start"
+    "startCommand": "pnpm preview --host 0.0.0.0 --port $PORT"
   }
 }
