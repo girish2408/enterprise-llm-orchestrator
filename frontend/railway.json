@@ -1,0 +1,12 @@
+{
+  "build": {
+    "builder": "nixpacks"
+  },
+  "deploy": {
+    "numReplicas": 1,
+    "restartPolicyType": "ON_FAILURE",
+    "healthcheckPath": "/",
+    "healthcheckTimeout": 100,
+    "startCommand": "pnpm preview --host 0.0.0.0 --port $PORT"
+  }
+}
