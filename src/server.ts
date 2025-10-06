@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import path from 'path';
 import { logger } from './config/logger.js';
 import { env } from './config/env.js';
 import { db } from './services/db.js';
@@ -69,27 +70,52 @@ export function createServer(): express.Application {
   app.use('/data', dataRouter);
   app.use('/entities', entitiesRouter);
 
-  // Root endpoint
-  app.get('/', (req, res) => {
-    res.json({
-      name: 'Enterprise LLM Orchestrator',
-      version: '1.0.0',
-      description: 'Enterprise assistant with HR, CRM, and Banking tools',
-      endpoints: {
-        health: '/healthz',
-        chat: '/chat',
-        tools: '/tools',
-      },
+  // Serve static files from frontend build (in production)
+  if (env.NODE_ENV === 'production') {
+    const frontendPath = path.join(process.cwd(), 'dist', 'public');
+    app.use(express.static(frontendPath));
+    
+    // API info endpoint (before catch-all)
+    app.get('/api/info', (req, res) => {
+      res.json({
+        name: 'Enterprise LLM Orchestrator',
+        version: '1.0.0',
+        description: 'Enterprise assistant with HR, CRM, and Banking tools',
+        endpoints: {
+          health: '/healthz',
+          chat: '/chat',
+          tools: '/tools',
+        },
+      });
     });
-  });
+    
+    // Catch-all handler: send back React's index.html file for client-side routing
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(frontendPath, 'index.html'));
+    });
+  } else {
+    // Development: API info endpoint
+    app.get('/', (req, res) => {
+      res.json({
+        name: 'Enterprise LLM Orchestrator',
+        version: '1.0.0',
+        description: 'Enterprise assistant with HR, CRM, and Banking tools',
+        endpoints: {
+          health: '/healthz',
+          chat: '/chat',
+          tools: '/tools',
+        },
+      });
+    });
 
-  // 404 handler
-  app.use('*', (req, res) => {
-    res.status(404).json({
-      error: 'Not found',
-      message: `Route ${req.method} ${req.originalUrl} not found`,
+    // 404 handler for development
+    app.use('*', (req, res) => {
+      res.status(404).json({
+        error: 'Not found',
+        message: `Route ${req.method} ${req.originalUrl} not found`,
+      });
     });
-  });
+  }
 
   // Global error handler
   app.use((error: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {

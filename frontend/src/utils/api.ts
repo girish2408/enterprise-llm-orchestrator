@@ -1,6 +1,6 @@
 import { Tool, ChatResponse, HealthStatus } from '../types';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'https://web-production-37bd.up.railway.app';
+const API_BASE = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:8080');
 const API_KEY = 'test-api-key-12345';
 
 class ApiClient {
